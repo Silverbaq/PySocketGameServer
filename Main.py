@@ -60,14 +60,20 @@ def clientthread(conn):
     conn.close()
     print 'Client left'
 
-while True:
-    # Accepting incoming connections
-    conn, addr = sock.accept()
+serverrunning = True
 
-    # Creating new thread. Calling clientthread function for this function and passing conn as argument.
-    start_new_thread(clientthread,(conn,)) # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
+while serverrunning:
 
-conn.close()
+    try:
+        # Accepting incoming connections
+        conn, addr = sock.accept()
+
+        # Creating new thread. Calling clientthread function for this function and passing conn as argument.
+        start_new_thread(clientthread,(conn,)) # start new thread takes 1st argument as a function name to be run, second is the tuple of arguments to the function.
+    except KeyboardInterrupt:
+        serverrunning = False
+
+print "Socket Shutdown"
 sock.close()
 
 
